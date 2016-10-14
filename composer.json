@@ -9,5 +9,12 @@
             "email": "ziel@websight.de"
         }
     ],
-    "require": {}
+    "require": {
+        "egeloen/lucene-search-bundle": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Websight\\SearchDebugBundle\\": ""
+        }
+    }
 }
