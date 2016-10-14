@@ -1,0 +1,13 @@
+{
+    "name": "websight/search-debug-bundle",
+    "description": "Integrates IvoryLuceneSearchBundle with the debug bar",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cedric Ziel",
+            "email": "ziel@websight.de"
+        }
+    ],
+    "require": {}
+}

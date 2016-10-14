@@ -1,0 +1,107 @@
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+        <span class="icon">{{ include('@WebsightSearchDebug/Icons/search.svg') }}</span>
+        <span class="sf-toolbar-value">{{ collector.totalQueries }}</span>
+        <span class="sf-toolbar-label">in</span>
+        <span class="sf-toolbar-value">{{ collector.totalQueryTime }}&nbsp;ms</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Index Queries</b>
+            <span class="sf-toolbar-status">{{ collector.totalQueries }}</span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
+            <b># of indexes</b>
+            <span class="sf-toolbar-status">{{ collector.indexes|length }}</span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
+            <b>Query Time</b>
+            <span>{{ collector.totalQueryTime }}&nbsp;ms</span>
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+{% endblock %}
+
+{% block menu %}
+    <span class="label">
+        <span class="icon">{{ include('@WebsightSearchDebug/Icons/search.svg') }}</span>
+        <strong>Lucene Search Index</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Lucene Search metrics</h2>
+
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.totalQueries }}</span>
+            <span class="label">Index Queries</span>
+        </div>
+
+        <div class="metric">
+            <span class="value">{{ collector.totalQueryTime }} ms</span>
+            <span class="label">Query time</span>
+        </div>
+
+    </div>
+
+    <h2>Lucene indexes</h2>
+    <table class="">
+        <thead>
+        <tr>
+            <th scope="col" class="key">Name</th>
+            <th scope="col">Analyzer</th>
+            <th scope="col">Path</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if collector.indexes | length > 0 %}
+            {% for name,index in collector.indexes %}
+                <tr>
+                    <th scope="row">{{ name }}</th>
+                    <td>{{ index.analyzer }}</td>
+                    <td>{{ index.path }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <th scope="row"></th>
+                <td><em>No indexes!</em></td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+    <h2>Queries</h2>
+    <table class="alt queries-table">
+        <thead>
+        <tr>
+            <th class="nowrap" style="cursor: pointer;">#</th>
+            <th class="nowrap" style="cursor: pointer;">Time<span></span></th>
+            <th class="nowrap" style="cursor: pointer;">Memory<span></span></th>
+            <th style="width: 100%;">Info</th>
+        </tr>
+        </thead>
+        <tbody id="queries-1">
+        {% for index in collector.queries %}
+            {% for query in index %}
+                {% set stopWatch = query.stopwatch %}
+                <tr id="queryNo-1-1">
+                    <td class="nowrap">{{ loop.index }}</td>
+                    <td class="nowrap">{{ stopWatch.duration }}&nbsp;ms</td>
+                    <td class="nowrap">{{ stopWatch.memory / 1024 / 1024 }}&nbsp;MB</td>
+                    <td>
+                        <pre class="highlight highlight-sql">{{ query.query }}</pre>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

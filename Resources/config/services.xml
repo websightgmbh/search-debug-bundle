@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="websight_search_debug.data_collector.lucene_query_collector"
+                 class="Websight\SearchDebugBundle\DataCollector\LuceneQueryCollector" public="false">
+            <tag name="data_collector" template="@WebsightSearchDebug/Collector/LuceneQuery/template.html.twig"
+                 id="websight.search_debug.lucene_query_collector"/>
+            <argument type="service" id="ivory_lucene_search"/>
+        </service>
+    </services>
+</container>
